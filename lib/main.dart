@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'LoginRegister.dart'; // Importar la pantalla LoginRegister
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,6 @@ class MyApp extends StatelessWidget {
 
 class Inicio extends StatelessWidget {
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -49,7 +49,11 @@ class Inicio extends StatelessWidget {
               // Botón de ingresar
               ElevatedButton(
                 onPressed: () {
-                  // Acción al presionar el botón
+                  // Navegación a la nueva pantalla
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginRegister()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
