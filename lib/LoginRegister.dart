@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'MenuInicial.dart'; // Importamos el menú inicial
 
 class LoginRegister extends StatefulWidget {
+  const LoginRegister({super.key});
+
   @override
   _LoginRegisterState createState() => _LoginRegisterState();
 }
@@ -16,7 +18,7 @@ class _LoginRegisterState extends State<LoginRegister> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context); // Volver a la pantalla anterior
           },
@@ -35,7 +37,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                   isLogin = index == 0;
                 });
               },
-              children: [
+              children: const [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text('Ingresar'),
@@ -46,10 +48,10 @@ class _LoginRegisterState extends State<LoginRegister> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Campos para ingresar datos
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(20),
@@ -64,7 +66,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                       fillColor: Colors.green[50],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
@@ -74,7 +76,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                     obscureText: true,
                   ),
                   if (!isLogin) ...[
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'Repetir contraseña',
@@ -84,7 +86,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                       obscureText: true,
                     ),
                   ],
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Botón de ingresar/registrarse
                   ElevatedButton(
                     onPressed: () {
@@ -99,7 +101,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                       // Navegar al menú inicial
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MenuInicial()),
+                        MaterialPageRoute(builder: (context) => const MenuInicial()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -107,11 +109,11 @@ class _LoginRegisterState extends State<LoginRegister> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                          const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     ),
                     child: Text(
                       isLogin ? 'Ingresar' : 'Registrarse',
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ],

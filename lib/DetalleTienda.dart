@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DetalleTienda extends StatelessWidget {
   final String tiendaNombre;
 
-  DetalleTienda({required this.tiendaNombre});
+  DetalleTienda({super.key, required this.tiendaNombre});
 
   // Descripciones para cada tienda
   final Map<String, String> tiendaDescripciones = {
@@ -74,7 +74,7 @@ class DetalleTienda extends StatelessWidget {
             top: 40,
             left: 20,
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -82,10 +82,10 @@ class DetalleTienda extends StatelessWidget {
           ),
           // Contenido de la pantalla
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                SizedBox(height: 60), // Espacio para el botón de regreso
+                const SizedBox(height: 60), // Espacio para el botón de regreso
                 // Imagen del logo centrada
                 Center(
                   child: Image.asset(
@@ -95,14 +95,14 @@ class DetalleTienda extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Descripción de la tienda
                 Text(
                   tiendaDescripciones[tiendaNombre] ?? 'Descripción no disponible',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Banner específico de la tienda
                 Image.asset(
                   bannerPath,
@@ -110,7 +110,7 @@ class DetalleTienda extends StatelessWidget {
                   height: 100,
                   fit: BoxFit.cover,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Grid de imágenes promocionales
                 Expanded(
                   child: GridView.count(
@@ -120,38 +120,38 @@ class DetalleTienda extends StatelessWidget {
                     children: _buildPromotionalButtons(promoImages),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Botón de contacto
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para el botón de contacto
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF66BB6A).withOpacity(0.8),
+                    backgroundColor: const Color(0xFF66BB6A).withOpacity(0.8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Contacto',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // Botón de mapa
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para el botón de mapa
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF66BB6A).withOpacity(0.8),
+                    backgroundColor: const Color(0xFF66BB6A).withOpacity(0.8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Mapa',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
@@ -173,7 +173,7 @@ class DetalleTienda extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
         ),
         onPressed: () {
           // Lógica futura para este botón se añadirá más adelante
