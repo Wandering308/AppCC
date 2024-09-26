@@ -38,6 +38,7 @@ class _LoginRegisterState extends State<LoginRegister> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Botones para alternar entre ingresar y registrar
             ToggleButtons(
               borderRadius: BorderRadius.circular(30),
               isSelected: [isLogin, !isLogin],
@@ -58,6 +59,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               ],
             ),
             const SizedBox(height: 20),
+            // Campos para ingresar datos
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -66,6 +68,7 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
               child: Column(
                 children: [
+                  // Campo de Email
                   TextField(
                     controller: emailController,
                     decoration: InputDecoration(
@@ -75,6 +78,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  // Campo de Contraseña
                   TextField(
                     controller: passwordController,
                     decoration: InputDecoration(
@@ -86,6 +90,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                   ),
                   if (!isLogin) ...[
                     const SizedBox(height: 10),
+                    // Campo de Repetir Contraseña
                     TextField(
                       controller: repeatPasswordController,
                       decoration: InputDecoration(
@@ -97,12 +102,13 @@ class _LoginRegisterState extends State<LoginRegister> {
                     ),
                   ],
                   const SizedBox(height: 20),
+                  // Botón de ingresar/registrarse
                   ElevatedButton(
                     onPressed: () async {
                       if (isLogin) {
-                        await _signIn();
+                        await _validateAndSignIn();
                       } else {
-                        await _register();
+                        await _validateAndRegister();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -125,11 +131,26 @@ class _LoginRegisterState extends State<LoginRegister> {
     );
   }
 
-  // Método para registrar un nuevo usuario
-  Future<void> _register() async {
+  // Método para validar y registrar un nuevo usuario
+  Future<void> _validateAndRegister() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final repeatPassword = repeatPasswordController.text.trim();
+
+    // Validaciones
+    if (email.isEmpty || password.isEmpty || repeatPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todos los campos son obligatorios')),
+      );
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, ingrese un email válido')),
+      );
+      return;
+    }
 
     if (password != repeatPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -157,18 +178,31 @@ class _LoginRegisterState extends State<LoginRegister> {
         MaterialPageRoute(builder: (context) => const MenuInicial()),
       );
     } catch (e) {
-      // Mostrar error y depuración en consola
-      print('Error al registrarse: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al registrarse: $e')),
       );
     }
   }
 
-  // Método para iniciar sesión
-  Future<void> _signIn() async {
+  // Método para validar e iniciar sesión
+  Future<void> _validateAndSignIn() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
+
+    // Validaciones
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todos los campos son obligatorios')),
+      );
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, ingrese un email válido')),
+      );
+      return;
+    }
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -177,8 +211,6 @@ class _LoginRegisterState extends State<LoginRegister> {
         MaterialPageRoute(builder: (context) => const MenuInicial()),
       );
     } catch (e) {
-      // Mostrar error y depuración en consola
-      print('Error al iniciar sesión: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al iniciar sesión: $e')),
       );
