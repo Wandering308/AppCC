@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Tiendas.dart'; // Importamos la pantalla de Tiendas
 
 class MenuInicial extends StatelessWidget {
   @override
@@ -47,21 +48,21 @@ class MenuInicial extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            // Cuadrícula de íconos de servicios
+            // Cuadrícula de botones de servicios
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 children: [
-                  _buildServiceButton(Icons.shopping_bag, 'Ingreso a apps'),
-                  _buildServiceButton(Icons.computer, 'Computadora'),
-                  _buildServiceButton(Icons.local_parking, 'Estacionamiento'),
-                  _buildServiceButton(Icons.medical_services, 'Salud'),
-                  _buildServiceButton(Icons.card_giftcard, 'Regalos'),
-                  _buildServiceButton(Icons.calendar_today, 'Calendario'),
-                  _buildServiceButton(Icons.shopping_cart, 'Carrito'),
-                  _buildServiceButton(Icons.fastfood, 'Comida'),
+                  _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
+                  _buildServiceButton(context, Icons.computer, 'Computadora'),
+                  _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
+                  _buildServiceButton(context, Icons.medical_services, 'Salud'),
+                  _buildServiceButton(context, Icons.card_giftcard, 'Regalos'),
+                  _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
+                  _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
+                  _buildServiceButton(context, Icons.fastfood, 'Comida'),
                 ],
               ),
             ),
@@ -82,12 +83,39 @@ class MenuInicial extends StatelessWidget {
   }
 
   // Widget para los botones de servicio
-  Widget _buildServiceButton(IconData icon, String label) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.green[50],
-        borderRadius: BorderRadius.circular(20),
+  Widget _buildServiceButton(BuildContext context, IconData icon, String label) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green[50],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: EdgeInsets.all(10),
       ),
+      onPressed: () {
+        if (label == 'Tiendas') {
+          // Navegar a la pantalla de Tiendas con animación
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => Tiendas(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = Offset(0.0, 1.0);
+                var end = Offset.zero;
+                var curve = Curves.ease;
+
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        }
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
