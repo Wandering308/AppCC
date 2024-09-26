@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_cc/Mapa.dart';
+import 'Anuncios.dart'; // Importamos la pantalla de Anuncios
 import 'Tiendas.dart'; // Importamos la pantalla de Tiendas
+import 'BarraLateral.dart'; // Importamos la barra lateral
 
 class MenuInicial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: BarraLateral(), // Añadimos el Drawer (barra lateral)
+      appBar: AppBar(
+        title: Text('Menú Inicial'),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu), // Icono de tres barras
+            onPressed: () => Scaffold.of(context).openDrawer(), // Abre el drawer al presionar
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           // Imagen de fondo
@@ -14,62 +27,63 @@ class MenuInicial extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // Campo de búsqueda
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Buscar',
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            // Título
-            Text(
-              'Ingresa a tus servicios',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            // Cuadrícula de botones de servicios
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: [
-                  _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
-                  _buildServiceButton(context, Icons.computer, 'Computadora'),
-                  _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
-                  _buildServiceButton(context, Icons.medical_services, 'Salud'),
-                  _buildServiceButton(context, Icons.card_giftcard, 'Regalos'),
-                  _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
-                  _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
-                  _buildServiceButton(context, Icons.fastfood, 'Comida'),
-                ],
-              ),
-            ),
-            // Botones inferiores
-            Column(
+          // Contenido sobre la imagen de fondo
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
               children: [
-                _buildMenuButton('Promociones', Icons.local_offer),
-                SizedBox(height: 10),
-                _buildMenuButton('Anuncios', Icons.announcement),
-                SizedBox(height: 10),
-                _buildMenuButton('Mapa', Icons.map),
+                // Campo de búsqueda
+                TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Buscar',
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                // Título
+                Text(
+                  'Ingresa a tus servicios',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                // Cuadrícula de botones de servicios
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: [
+                      _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
+                      _buildServiceButton(context, Icons.computer, 'Computadora'),
+                      _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
+                      _buildServiceButton(context, Icons.medical_services, 'Salud'),
+                      _buildServiceButton(context, Icons.card_giftcard, 'Regalos'),
+                      _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
+                      _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
+                      _buildServiceButton(context, Icons.fastfood, 'Comida'),
+                    ],
+                  ),
+                ),
+                // Botones inferiores
+                Column(
+                  children: [
+                    _buildMenuButton(context, 'Promociones', Icons.local_offer),
+                    SizedBox(height: 10),
+                    _buildMenuButton(context, 'Anuncios', Icons.announcement), // Botón de Anuncios
+                    SizedBox(height: 10),
+                    _buildMenuButton(context, 'Mapa', Icons.map),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -130,6 +144,12 @@ class MenuInicial extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => Mapa(latitude: 40.7128, longitude: -74.0060), // Coordenadas de ejemplo
             ),
+          );
+        } else if (label == 'Anuncios') {
+          // Navegar a la pantalla de Anuncios
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Anuncios()), // Navegamos a la pantalla de Anuncios
           );
         }
       },
