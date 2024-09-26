@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_cc/Mapa.dart';
 import 'Anuncios.dart'; // Importamos la pantalla de Anuncios
 import 'Tiendas.dart'; // Importamos la pantalla de Tiendas
-import 'BarraLateral.dart'; // Importamos la barra lateral
+import 'Mapa.dart'; // Importamos la pantalla de Mapa
+import 'BarraLateral.dart';
 
 class MenuInicial extends StatelessWidget {
+  const MenuInicial({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,31 +30,33 @@ class MenuInicial extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          // Contenido sobre la imagen de fondo
+          // Contenido de la pantalla
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
+                // Espacio para la barra de búsqueda y los demás widgets
+                SizedBox(height: MediaQuery.of(context).padding.top),
                 // Campo de búsqueda
                 TextField(
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     hintText: 'Buscar',
                     filled: true,
-                    fillColor: Colors.grey[200],
+                    fillColor: Colors.grey.withOpacity(0.7), // Corregido
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide.none,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Título
-                Text(
+                const Text(
                   'Ingresa a tus servicios',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Cuadrícula de botones de servicios
                 Expanded(
                   child: GridView.count(
@@ -74,10 +79,11 @@ class MenuInicial extends StatelessWidget {
                 Column(
                   children: [
                     _buildMenuButton(context, 'Promociones', Icons.local_offer),
-                    SizedBox(height: 10),
-                    _buildMenuButton(context, 'Anuncios', Icons.announcement), // Botón de Anuncios
-                    SizedBox(height: 10),
-                    _buildMenuButton(context, 'Mapa', Icons.map),
+                    
+                    const SizedBox(height: 10),
+                    _buildMenuButton(context, 'Anuncios', Icons.announcement),
+                    const SizedBox(height: 10),
+                    _buildMenuButton(context, 'Mapa', Icons.map), // Llamada al botón de Mapa
                   ],
                 ),
               ],
@@ -92,11 +98,11 @@ class MenuInicial extends StatelessWidget {
   Widget _buildServiceButton(BuildContext context, IconData icon, String label) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFB2DFDB).withOpacity(0.8), // Usando un color personalizado con opacidad
+        backgroundColor: const Color(0xFFB2DFDB).withOpacity(0.8), // Usando un color personalizado con opacidad
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
       ),
       onPressed: () {
         if (label == 'Tiendas') {
@@ -104,9 +110,9 @@ class MenuInicial extends StatelessWidget {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => Tiendas(),
+              pageBuilder: (context, animation, secondaryAnimation) => const Tiendas(),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                var begin = Offset(0.0, 1.0);
+                var begin = const Offset(0.0, 1.0);
                 var end = Offset.zero;
                 var curve = Curves.ease;
 
@@ -126,8 +132,8 @@ class MenuInicial extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 50, color: Colors.black),
-          SizedBox(height: 10),
-          Text(label, textAlign: TextAlign.center, style: TextStyle(color: Colors.black)),
+          const SizedBox(height: 10),
+          Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.black)),
         ],
       ),
     );
@@ -142,7 +148,7 @@ class MenuInicial extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Mapa(latitude: 40.7128, longitude: -74.0060), // Coordenadas de ejemplo
+              builder: (context) => const Mapa(latitude: 40.7128, longitude: -74.0060), // Coordenadas de ejemplo
             ),
           );
         } else if (label == 'Anuncios') {
@@ -154,18 +160,18 @@ class MenuInicial extends StatelessWidget {
         }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF66BB6A).withOpacity(0.8), // Usando un color personalizado con opacidad
+        backgroundColor: const Color(0xFF66BB6A).withOpacity(0.8), // Usando un color personalizado con opacidad
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.white),
-          SizedBox(width: 10),
-          Text(label, style: TextStyle(color: Colors.white, fontSize: 16)),
+          const SizedBox(width: 10),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 16)),
         ],
       ),
     );

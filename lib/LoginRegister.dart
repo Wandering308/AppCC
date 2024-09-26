@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importar Firestore
 import 'MenuInicial.dart'; // Importamos el menú inicial
 
 class LoginRegister extends StatefulWidget {
+  final String tipoUsuario;
+
+  const LoginRegister({super.key, required this.tipoUsuario});
+
   @override
   _LoginRegisterState createState() => _LoginRegisterState();
 }
 
 class _LoginRegisterState extends State<LoginRegister> {
-  bool isLogin = true; // Variable para alternar entre ingresar y registrar
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Instancia de Firestore
+  bool isLogin = true;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController repeatPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +28,9 @@ class _LoginRegisterState extends State<LoginRegister> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Volver a la pantalla anterior
+            Navigator.pop(context);
           },
         ),
       ),
@@ -35,7 +47,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                   isLogin = index == 0;
                 });
               },
-              children: [
+              children: const [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text('Ingresar'),
@@ -46,26 +58,29 @@ class _LoginRegisterState extends State<LoginRegister> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Campos para ingresar datos
             Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
                 children: [
-                  // Campo de Email (visible en ambas opciones: Ingresar y Registrar)
+                  // Campo de Email
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       filled: true,
                       fillColor: Colors.green[50],
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
+                  // Campo de Contraseña
                   TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       filled: true,
@@ -74,8 +89,10 @@ class _LoginRegisterState extends State<LoginRegister> {
                     obscureText: true,
                   ),
                   if (!isLogin) ...[
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
+                    // Campo de Repetir Contraseña
                     TextField(
+                      controller: repeatPasswordController,
                       decoration: InputDecoration(
                         labelText: 'Repetir contraseña',
                         filled: true,
@@ -84,34 +101,25 @@ class _LoginRegisterState extends State<LoginRegister> {
                       obscureText: true,
                     ),
                   ],
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Botón de ingresar/registrarse
                   ElevatedButton(
-                    onPressed: () {
-                      // Acción al presionar el botón de ingresar/registrar
+                    onPressed: () async {
                       if (isLogin) {
-                        // Lógica para ingresar
-                        print('Ingresando...');
+                        await _validateAndSignIn();
                       } else {
-                        // Lógica para registrar
-                        print('Registrando...');
+                        await _validateAndRegister();
                       }
-                      // Navegar al menú inicial
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MenuInicial()),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     ),
                     child: Text(
                       isLogin ? 'Ingresar' : 'Registrarse',
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ],
@@ -121,5 +129,91 @@ class _LoginRegisterState extends State<LoginRegister> {
         ),
       ),
     );
+  }
+
+  // Método para validar y registrar un nuevo usuario
+  Future<void> _validateAndRegister() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final repeatPassword = repeatPasswordController.text.trim();
+
+    // Validaciones
+    if (email.isEmpty || password.isEmpty || repeatPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todos los campos son obligatorios')),
+      );
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, ingrese un email válido')),
+      );
+      return;
+    }
+
+    if (password != repeatPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Las contraseñas no coinciden')),
+      );
+      return;
+    }
+
+    try {
+      // Crear usuario en Firebase Authentication
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Guardar información adicional en Firestore
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'email': email,
+        'tipoUsuario': widget.tipoUsuario,
+      });
+
+      // Navegar al menú inicial después de registrarse
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MenuInicial()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al registrarse: $e')),
+      );
+    }
+  }
+
+  // Método para validar e iniciar sesión
+  Future<void> _validateAndSignIn() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    // Validaciones
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todos los campos son obligatorios')),
+      );
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor, ingrese un email válido')),
+      );
+      return;
+    }
+
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MenuInicial()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al iniciar sesión: $e')),
+      );
+    }
   }
 }

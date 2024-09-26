@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DetalleTienda extends StatelessWidget {
   final String tiendaNombre;
 
-  DetalleTienda({required this.tiendaNombre});
+  DetalleTienda({super.key, required this.tiendaNombre});
 
   // Descripciones para cada tienda
   final Map<String, String> tiendaDescripciones = {
@@ -19,16 +19,46 @@ class DetalleTienda extends StatelessWidget {
     'Tienda 10': 'Tiendas de belleza y cuidado personal, con las mejores marcas y productos.'
   };
 
-  // Lista de imágenes promocionales
-  final List<String> promoImages = [
-    'assets/images/promo1.png',
-    'assets/images/promo2.png',
-    'assets/images/promo3.png',
-    'assets/images/promo4.png',
-  ];
+  // Mapa de imágenes promocionales por tienda
+  final Map<String, List<String>> tiendaPromoImages = {
+    'Tienda 1': [
+      'assets/images/banner.png',
+      'assets/images/banner.png',
+    ],
+    'Tienda 2': [
+      'assets/images/banner.png',
+      'assets/images/banner.png',
+    ],
+    'Tienda 3': [
+      'assets/images/banner.png',
+      'assets/images/banner.png',
+    ],
+    // Agrega más listas de imágenes para otras tiendas...
+  };
+
+  // Mapa de logos por tienda
+  final Map<String, String> tiendaLogos = {
+    'Tienda 1': 'assets/images/logo.png',
+    'Tienda 2': 'assets/images/logo.png',
+    'Tienda 3': 'assets/images/logo.png',
+    // Agrega más logos para otras tiendas...
+  };
+
+  // Mapa de banners por tienda
+  final Map<String, String> tiendaBanners = {
+    'Tienda 1': 'assets/images/banner.png',
+    'Tienda 2': 'assets/images/banner.png',
+    'Tienda 3': 'assets/images/banner.png',
+    // Agrega más banners para otras tiendas...
+  };
 
   @override
   Widget build(BuildContext context) {
+    // Obtener las imágenes promocionales, logo y banner para la tienda seleccionada
+    final List<String> promoImages = tiendaPromoImages[tiendaNombre] ?? [];
+    final String logoPath = tiendaLogos[tiendaNombre] ?? 'assets/images/logo.png';
+    final String bannerPath = tiendaBanners[tiendaNombre] ?? 'assets/images/banner.png';
+
     return Scaffold(
       body: Stack(
         children: [
@@ -39,88 +69,89 @@ class DetalleTienda extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
+          // Botón de regreso en la parte superior
+          Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
           // Contenido de la pantalla
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                // Botón de regreso (AppBar)
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-                // Imagen grande (Logo) centrada
+                const SizedBox(height: 60), // Espacio para el botón de regreso
+                // Imagen del logo centrada
                 Center(
                   child: Image.asset(
-                    'assets/images/logo.png', // Cambia esto a la imagen del logo que desees usar
+                    logoPath,
                     width: 150,
                     height: 150,
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Descripción de la tienda
                 Text(
                   tiendaDescripciones[tiendaNombre] ?? 'Descripción no disponible',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20),
-                // Banner grande
+                const SizedBox(height: 20),
+                // Banner específico de la tienda
                 Image.asset(
-                  'assets/images/banner.png', // Cambia esto al banner que desees usar
+                  bannerPath,
                   width: double.infinity,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Grid de imágenes promocionales
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    children: _buildPromotionalButtons(),
+                    children: _buildPromotionalButtons(promoImages),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Botón de contacto
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para el botón de contacto
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF66BB6A).withOpacity(0.8),
+                    backgroundColor: const Color(0xFF66BB6A).withOpacity(0.8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Contacto',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // Botón de mapa
                 ElevatedButton(
                   onPressed: () {
                     // Lógica para el botón de mapa
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF66BB6A).withOpacity(0.8),
+                    backgroundColor: const Color(0xFF66BB6A).withOpacity(0.8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Mapa',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
@@ -134,7 +165,7 @@ class DetalleTienda extends StatelessWidget {
   }
 
   // Construye los botones de imágenes promocionales (con imágenes de assets)
-  List<Widget> _buildPromotionalButtons() {
+  List<Widget> _buildPromotionalButtons(List<String> promoImages) {
     return promoImages.map((imagePath) {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -142,7 +173,7 @@ class DetalleTienda extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
         ),
         onPressed: () {
           // Lógica futura para este botón se añadirá más adelante

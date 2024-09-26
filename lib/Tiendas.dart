@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'DetalleTienda.dart'; // Importa el widget de la pantalla de detalle de la tienda
 
 class Tiendas extends StatelessWidget {
+  const Tiendas({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,14 +18,14 @@ class Tiendas extends StatelessWidget {
           ),
           // Contenido de la pantalla
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 // Botón de regreso (AppBar)
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -31,12 +33,12 @@ class Tiendas extends StatelessWidget {
                   ],
                 ),
                 // Título de la sección
-                Text(
+                const Text(
                   'Tiendas',
                   style: TextStyle(
                       fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Cuadrícula de tiendas
                 Expanded(
                   child: GridView.count(
@@ -69,11 +71,11 @@ class Tiendas extends StatelessWidget {
   Widget _buildStoreButton(BuildContext context, String imagePath, String label) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFFB2DFDB).withOpacity(0.8), // Usando color personalizado con opacidad
+        backgroundColor: const Color(0xFFB2DFDB).withOpacity(0.8), // Usando color personalizado con opacidad
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
       ),
       onPressed: () {
         // Navegar a la pantalla de detalle de la tienda
@@ -92,11 +94,11 @@ class Tiendas extends StatelessWidget {
             width: 50,
             height: 50,
             errorBuilder: (context, error, stackTrace) {
-              return Icon(Icons.error, size: 50, color: Colors.red);
+              return const Icon(Icons.error, size: 50, color: Colors.red);
             },
           ),
-          SizedBox(height: 10),
-          Text(label, textAlign: TextAlign.center, style: TextStyle(color: Colors.black)),
+          const SizedBox(height: 10),
+          Text(label, textAlign: TextAlign.center, style: const TextStyle(color: Colors.black)),
         ],
       ),
     );
