@@ -9,11 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  url_launcher: ^6.0.20
 
+
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  webview_flutter: ^4.0.6
+  
 
 flutter:
   uses-material-design: true
@@ -21,10 +26,24 @@ flutter:
   assets:
     - assets/logo.png
     - assets/background.jpg
-    - assets/logo.png
+
     - assets/images/store1.png
     - assets/images/store2.png
     - assets/images/store3.png
     - assets/images/store4.png
     - assets/images/store5.png
     - assets/images/store6.png
+    - assets/images/store7.png
+    - assets/images/store8.png
+    - assets/images/store9.png
+    - assets/images/store10.png
+
+
+    - assets/images/banner.png
+    - assets/images/promo1.png
+    - assets/images/promo2.png
+    - assets/images/promo3.png
+    - assets/images/promo4.png
+    - assets/images/logo.png
+
+

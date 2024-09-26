@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
 import 'Tiendas.dart'; // Importamos la pantalla de Tiendas
 
-
 class MenuInicial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.menu, color: Colors.black),
-            onPressed: () {
-              // Acción para abrir el menú de opciones
-            },
+      body: Stack(
+        children: [
+          // Imagen de fondo
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background.jpg', // Cambiado a background.jpg
+              fit: BoxFit.cover,
+            ),
           ),
         ],
       ),
@@ -56,14 +47,6 @@ class MenuInicial extends StatelessWidget {
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 children: [
-<<<<<<< HEAD
-                  _buildServiceButton(Icons.shopping_bag, 'Ingreso a apps'),
-                  _buildServiceButton(Icons.computer, 'Tecnologia'),
-                  _buildServiceButton(Icons.local_parking, 'Estacionamiento'),
-                  _buildServiceButton(Icons.medical_services, 'Salud'),
-                  _buildServiceButton(Icons.card_giftcard, 'Regalos'),                  
-                  _buildServiceButton(Icons.fastfood, 'Comida'),
-=======
                   _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
                   _buildServiceButton(context, Icons.computer, 'Computadora'),
                   _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
@@ -72,7 +55,6 @@ class MenuInicial extends StatelessWidget {
                   _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
                   _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
                   _buildServiceButton(context, Icons.fastfood, 'Comida'),
->>>>>>> 89243b05b949f99b765fd8e9d95db1a3cce4c5b6
                 ],
               ),
             ),
@@ -96,7 +78,7 @@ class MenuInicial extends StatelessWidget {
   Widget _buildServiceButton(BuildContext context, IconData icon, String label) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green[50],
+        backgroundColor: Color(0xFFB2DFDB).withOpacity(0.8), // Usando un color personalizado con opacidad
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
@@ -131,20 +113,28 @@ class MenuInicial extends StatelessWidget {
         children: [
           Icon(icon, size: 50, color: Colors.black),
           SizedBox(height: 10),
-          Text(label, textAlign: TextAlign.center),
+          Text(label, textAlign: TextAlign.center, style: TextStyle(color: Colors.black)),
         ],
       ),
     );
   }
 
   // Widget para los botones del menú inferior
-  Widget _buildMenuButton(String label, IconData icon) {
+  Widget _buildMenuButton(BuildContext context, String label, IconData icon) {
     return ElevatedButton(
       onPressed: () {
-        // Acción al presionar el botón
+        if (label == 'Mapa') {
+          // Navegar a la pantalla del Mapa
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Mapa(latitude: 40.7128, longitude: -74.0060), // Coordenadas de ejemplo
+            ),
+          );
+        }
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green[400],
+        backgroundColor: Color(0xFF66BB6A).withOpacity(0.8), // Usando un color personalizado con opacidad
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
