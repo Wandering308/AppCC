@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ConfiguracionNotificaciones extends StatefulWidget {
+  const ConfiguracionNotificaciones({super.key});
+
   @override
   _ConfiguracionNotificacionesState createState() => _ConfiguracionNotificacionesState();
 }
@@ -12,20 +14,20 @@ class _ConfiguracionNotificacionesState extends State<ConfiguracionNotificacione
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Configuración de Notificaciones'),
+        title: const Text('Configuración de Notificaciones'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Activar Notificaciones',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SwitchListTile(
-              title: Text('Notificaciones'),
+              title: const Text('Notificaciones'),
               value: _notificacionesActivadas,
               onChanged: (bool value) {
                 setState(() {

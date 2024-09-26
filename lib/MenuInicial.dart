@@ -13,10 +13,10 @@ class MenuInicial extends StatelessWidget {
     return Scaffold(
       drawer: BarraLateral(), // Añadimos el Drawer (barra lateral)
       appBar: AppBar(
-        title: Text('Menú Inicial'),
+        title: const Text('Menú Inicial'),
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu), // Icono de tres barras
+            icon: const Icon(Icons.menu), // Icono de tres barras
             onPressed: () => Scaffold.of(context).openDrawer(), // Abre el drawer al presionar
           ),
         ),

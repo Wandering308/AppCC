@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CambiarClave extends StatefulWidget {
+  const CambiarClave({super.key});
+
   @override
   _CambiarClaveState createState() => _CambiarClaveState();
 }
@@ -24,7 +26,7 @@ class _CambiarClaveState extends State<CambiarClave> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cambiar Clave'),
+        title: const Text('Cambiar Clave'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +39,7 @@ class _CambiarClaveState extends State<CambiarClave> {
               TextFormField(
                 controller: _actualController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Contraseña Actual',
                   border: OutlineInputBorder(),
                 ),
@@ -48,13 +50,13 @@ class _CambiarClaveState extends State<CambiarClave> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Campo para la nueva contraseña
               TextFormField(
                 controller: _nuevaController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nueva Contraseña',
                   border: OutlineInputBorder(),
                 ),
@@ -68,13 +70,13 @@ class _CambiarClaveState extends State<CambiarClave> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Campo para repetir la nueva contraseña
               TextFormField(
                 controller: _repetirNuevaController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Repetir Nueva Contraseña',
                   border: OutlineInputBorder(),
                 ),
@@ -88,14 +90,14 @@ class _CambiarClaveState extends State<CambiarClave> {
                   return null;
                 },
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Botón para cambiar la contraseña
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green, // Botón verde
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -104,11 +106,11 @@ class _CambiarClaveState extends State<CambiarClave> {
                     if (_formKey.currentState?.validate() == true) {
                       // Aquí es donde implementarás la funcionalidad para cambiar la contraseña
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Procesando cambio de contraseña')),
+                        const SnackBar(content: Text('Procesando cambio de contraseña')),
                       );
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     'Cambiar Contraseña',
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),

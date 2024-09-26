@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Anuncios extends StatelessWidget {
+  const Anuncios({super.key});
+
   // Función para abrir enlaces
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -15,7 +17,7 @@ class Anuncios extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Anuncios'),
+        title: const Text('Anuncios'),
       ),
       body: SingleChildScrollView( // Para permitir el scroll
         padding: const EdgeInsets.all(20.0),
@@ -32,7 +34,7 @@ class Anuncios extends StatelessWidget {
                     context, 'assets/images/adidaslogo.png', 'Adidas'),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -42,7 +44,7 @@ class Anuncios extends StatelessWidget {
                     context, 'assets/images/frisbylogo.png', 'Frisby'),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -52,7 +54,7 @@ class Anuncios extends StatelessWidget {
                     context, 'assets/images/jumbo.png', 'Jumbo'),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -100,8 +102,8 @@ class Anuncios extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
           ),
-          SizedBox(height: 10),
-          Text(label, style: TextStyle(fontSize: 16)),
+          const SizedBox(height: 10),
+          Text(label, style: const TextStyle(fontSize: 16)),
         ],
       ),
     );
