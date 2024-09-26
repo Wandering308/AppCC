@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Importar Firebase Auth
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importar Firestore
 import 'MenuInicial.dart'; // Importamos el menú inicial
 
 class LoginRegister extends StatefulWidget {
@@ -12,10 +13,10 @@ class LoginRegister extends StatefulWidget {
 }
 
 class _LoginRegisterState extends State<LoginRegister> {
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Instancia de Firebase Auth
-  bool isLogin = true; // Variable para alternar entre ingresar y registrar
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Instancia de Firestore
+  bool isLogin = true;
 
-  // Controladores de los campos de texto
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController repeatPasswordController = TextEditingController();
@@ -29,7 +30,7 @@ class _LoginRegisterState extends State<LoginRegister> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Volver a la pantalla anterior
+            Navigator.pop(context);
           },
         ),
       ),
@@ -37,7 +38,6 @@ class _LoginRegisterState extends State<LoginRegister> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Botones para alternar entre ingresar y registrar
             ToggleButtons(
               borderRadius: BorderRadius.circular(30),
               isSelected: [isLogin, !isLogin],
@@ -58,7 +58,6 @@ class _LoginRegisterState extends State<LoginRegister> {
               ],
             ),
             const SizedBox(height: 20),
-            // Campos para ingresar datos
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -67,7 +66,6 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
               child: Column(
                 children: [
-                  // Campo de Email
                   TextField(
                     controller: emailController,
                     decoration: InputDecoration(
@@ -77,7 +75,6 @@ class _LoginRegisterState extends State<LoginRegister> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Campo de Contraseña
                   TextField(
                     controller: passwordController,
                     decoration: InputDecoration(
@@ -89,7 +86,6 @@ class _LoginRegisterState extends State<LoginRegister> {
                   ),
                   if (!isLogin) ...[
                     const SizedBox(height: 10),
-                    // Campo de Repetir Contraseña
                     TextField(
                       controller: repeatPasswordController,
                       decoration: InputDecoration(
@@ -101,14 +97,11 @@ class _LoginRegisterState extends State<LoginRegister> {
                     ),
                   ],
                   const SizedBox(height: 20),
-                  // Botón de ingresar/registrarse
                   ElevatedButton(
                     onPressed: () async {
                       if (isLogin) {
-                        // Lógica para ingresar
                         await _signIn();
                       } else {
-                        // Lógica para registrar
                         await _register();
                       }
                     },
@@ -132,14 +125,13 @@ class _LoginRegisterState extends State<LoginRegister> {
     );
   }
 
-  // Función para registrar un nuevo usuario
+  // Método para registrar un nuevo usuario
   Future<void> _register() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final repeatPassword = repeatPasswordController.text.trim();
 
     if (password != repeatPassword) {
-      // Mostrar un mensaje de error si las contraseñas no coinciden
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Las contraseñas no coinciden')),
       );
@@ -147,34 +139,46 @@ class _LoginRegisterState extends State<LoginRegister> {
     }
 
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      // Crear usuario en Firebase Authentication
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Guardar información adicional en Firestore
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'email': email,
+        'tipoUsuario': widget.tipoUsuario,
+      });
+
       // Navegar al menú inicial después de registrarse
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MenuInicial()),
       );
     } catch (e) {
-      // Mostrar el error si el registro falla
+      // Mostrar error y depuración en consola
+      print('Error al registrarse: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al registrarse: $e')),
       );
     }
   }
 
-  // Función para iniciar sesión
+  // Método para iniciar sesión
   Future<void> _signIn() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // Navegar al menú inicial después de iniciar sesión
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MenuInicial()),
       );
     } catch (e) {
-      // Mostrar el error si el inicio de sesión falla
+      // Mostrar error y depuración en consola
+      print('Error al iniciar sesión: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error al iniciar sesión: $e')),
       );
