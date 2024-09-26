@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Tiendas.dart'; // Importamos la pantalla de Tiendas
+import 'Mapa.dart'; // Importamos la pantalla de Mapa
 
 class MenuInicial extends StatelessWidget {
   @override
@@ -14,62 +15,66 @@ class MenuInicial extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // Campo de búsqueda
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Buscar',
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            // Título
-            Text(
-              'Ingresa a tus servicios',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            // Cuadrícula de botones de servicios
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: [
-                  _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
-                  _buildServiceButton(context, Icons.computer, 'Computadora'),
-                  _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
-                  _buildServiceButton(context, Icons.medical_services, 'Salud'),
-                  _buildServiceButton(context, Icons.card_giftcard, 'Regalos'),
-                  _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
-                  _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
-                  _buildServiceButton(context, Icons.fastfood, 'Comida'),
-                ],
-              ),
-            ),
-            // Botones inferiores
-            Column(
+          // Contenido de la pantalla
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
               children: [
-                _buildMenuButton('Promociones', Icons.local_offer),
-                SizedBox(height: 10),
-                _buildMenuButton('Anuncios', Icons.announcement),
-                SizedBox(height: 10),
-                _buildMenuButton('Mapa', Icons.map),
+                // Espacio para la barra de búsqueda y los demás widgets
+                SizedBox(height: MediaQuery.of(context).padding.top),
+                // Campo de búsqueda
+                TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Buscar',
+                    filled: true,
+                    fillColor: Colors.grey.withOpacity(0.7), // Corregido
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                // Título
+                Text(
+                  'Ingresa a tus servicios',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                // Cuadrícula de botones de servicios
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: [
+                      _buildServiceButton(context, Icons.shopping_bag, 'Tiendas'),
+                      _buildServiceButton(context, Icons.computer, 'Computadora'),
+                      _buildServiceButton(context, Icons.local_parking, 'Estacionamiento'),
+                      _buildServiceButton(context, Icons.medical_services, 'Salud'),
+                      _buildServiceButton(context, Icons.card_giftcard, 'Regalos'),
+                      _buildServiceButton(context, Icons.calendar_today, 'Calendario'),
+                      _buildServiceButton(context, Icons.shopping_cart, 'Carrito'),
+                      _buildServiceButton(context, Icons.fastfood, 'Comida'),
+                    ],
+                  ),
+                ),
+                // Botones inferiores
+                Column(
+                  children: [
+                    _buildMenuButton(context, 'Promociones', Icons.local_offer),
+                    
+                    SizedBox(height: 10),
+                    _buildMenuButton(context, 'Anuncios', Icons.announcement),
+                    SizedBox(height: 10),
+                    _buildMenuButton(context, 'Mapa', Icons.map), // Llamada al botón de Mapa
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
