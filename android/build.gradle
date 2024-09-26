@@ -19,6 +19,23 @@ tasks.register("clean", Delete) {
 
 buildscript {
     dependencies {
-        classpath 'com.google.gms:google-services:4.3.10' // Agrega esta línea
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath 'com.google.gms:google-services:4.3.10' 
     }
 }
+
+
+buildscript {
+    repositories {
+        google() // Asegúrate de que esté presente
+        mavenCentral() // Asegúrate de que esté presente
+    }
+}
+
+allprojects {
+    repositories {
+        google() // Asegúrate de que esté presente
+        mavenCentral() // Asegúrate de que esté presente
+    }
+}
+
