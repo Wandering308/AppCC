@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importar Firebase Core
 import 'LoginRegister.dart'; // Importar la pantalla LoginRegister
+import 'LoginAdmin.dart'; // Importar la pantalla LoginAdmin
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Asegurarse de que los widgets estén inicializados
@@ -44,7 +45,7 @@ class Inicio extends StatelessWidget {
               const SizedBox(height: 30),
               // Texto de bienvenida
               const Text(
-                'Bienvenido\nIngrese para continuar',
+                'Bienvenido\nSeleccione el tipo de inicio de sesión',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
@@ -53,23 +54,52 @@ class Inicio extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              // Botón de ingresar
+              // Botón para ingresar como Administrador
               ElevatedButton(
                 onPressed: () {
-                  // Navegación a la nueva pantalla
+                  // Navegación a la pantalla de inicio de sesión para Administrador
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginRegister()),
+                    MaterialPageRoute(
+                      builder: (context) => const LoginAdmin(), // Cambiado a LoginAdmin
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange, // Color de fondo naranja
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  minimumSize: const Size(200, 50), // Tamaño mínimo del botón
                 ),
                 child: const Text(
-                  'Ingresar',
+                  'Ingresar como Administrador',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 20), // Espacio entre los botones
+              // Botón para ingresar como Usuario
+              ElevatedButton(
+                onPressed: () {
+                  // Navegación a la pantalla de inicio de sesión para Usuario
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginRegister(tipoUsuario: 'Usuario'),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange, // Color de fondo naranja
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  minimumSize: const Size(200, 50), // Tamaño mínimo del botón
+                ),
+                child: const Text(
+                  'Ingresar como Usuario',
                   style: TextStyle(fontSize: 18),
                 ),
               ),

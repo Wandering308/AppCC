@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Importar Firebase Auth
 import 'MenuInicial.dart'; // Importamos el menú inicial
 
 class LoginRegister extends StatefulWidget {
-  const LoginRegister({super.key});
+  final String tipoUsuario;
+
+  const LoginRegister({super.key, required this.tipoUsuario});
 
   @override
   _LoginRegisterState createState() => _LoginRegisterState();
 }
 
 class _LoginRegisterState extends State<LoginRegister> {
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Instancia de Firebase Auth
   bool isLogin = true; // Variable para alternar entre ingresar y registrar
+
+  // Controladores de los campos de texto
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController repeatPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +67,9 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
               child: Column(
                 children: [
-                  // Campo de Email (visible en ambas opciones: Ingresar y Registrar)
+                  // Campo de Email
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       filled: true,
@@ -67,7 +77,9 @@ class _LoginRegisterState extends State<LoginRegister> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  // Campo de Contraseña
                   TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Contraseña',
                       filled: true,
@@ -77,7 +89,9 @@ class _LoginRegisterState extends State<LoginRegister> {
                   ),
                   if (!isLogin) ...[
                     const SizedBox(height: 10),
+                    // Campo de Repetir Contraseña
                     TextField(
+                      controller: repeatPasswordController,
                       decoration: InputDecoration(
                         labelText: 'Repetir contraseña',
                         filled: true,
@@ -89,27 +103,20 @@ class _LoginRegisterState extends State<LoginRegister> {
                   const SizedBox(height: 20),
                   // Botón de ingresar/registrarse
                   ElevatedButton(
-                    onPressed: () {
-                      // Acción al presionar el botón de ingresar/registrar
+                    onPressed: () async {
                       if (isLogin) {
                         // Lógica para ingresar
-                        print('Ingresando...');
+                        await _signIn();
                       } else {
                         // Lógica para registrar
-                        print('Registrando...');
+                        await _register();
                       }
-                      // Navegar al menú inicial
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MenuInicial()),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     ),
                     child: Text(
                       isLogin ? 'Ingresar' : 'Registrarse',
@@ -123,5 +130,54 @@ class _LoginRegisterState extends State<LoginRegister> {
         ),
       ),
     );
+  }
+
+  // Función para registrar un nuevo usuario
+  Future<void> _register() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final repeatPassword = repeatPasswordController.text.trim();
+
+    if (password != repeatPassword) {
+      // Mostrar un mensaje de error si las contraseñas no coinciden
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Las contraseñas no coinciden')),
+      );
+      return;
+    }
+
+    try {
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      // Navegar al menú inicial después de registrarse
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MenuInicial()),
+      );
+    } catch (e) {
+      // Mostrar el error si el registro falla
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al registrarse: $e')),
+      );
+    }
+  }
+
+  // Función para iniciar sesión
+  Future<void> _signIn() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      // Navegar al menú inicial después de iniciar sesión
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MenuInicial()),
+      );
+    } catch (e) {
+      // Mostrar el error si el inicio de sesión falla
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al iniciar sesión: $e')),
+      );
+    }
   }
 }
