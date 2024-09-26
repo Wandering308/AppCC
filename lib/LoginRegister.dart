@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'MenuInicial.dart'; // Importamos el menú inicial
 
 class LoginRegister extends StatefulWidget {
   @override
@@ -55,14 +56,14 @@ class _LoginRegisterState extends State<LoginRegister> {
               ),
               child: Column(
                 children: [
-                  if (!isLogin)
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        filled: true,
-                        fillColor: Colors.green[50],
-                      ),
+                  // Campo de Email (visible en ambas opciones: Ingresar y Registrar)
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.green[50],
                     ),
+                  ),
                   SizedBox(height: 10),
                   TextField(
                     decoration: InputDecoration(
@@ -95,6 +96,11 @@ class _LoginRegisterState extends State<LoginRegister> {
                         // Lógica para registrar
                         print('Registrando...');
                       }
+                      // Navegar al menú inicial
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MenuInicial()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
