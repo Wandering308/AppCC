@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class MenuInicial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,12 +56,10 @@ class MenuInicial extends StatelessWidget {
                 mainAxisSpacing: 20,
                 children: [
                   _buildServiceButton(Icons.shopping_bag, 'Ingreso a apps'),
-                  _buildServiceButton(Icons.computer, 'Computadora'),
+                  _buildServiceButton(Icons.computer, 'Tecnologia'),
                   _buildServiceButton(Icons.local_parking, 'Estacionamiento'),
                   _buildServiceButton(Icons.medical_services, 'Salud'),
-                  _buildServiceButton(Icons.card_giftcard, 'Regalos'),
-                  _buildServiceButton(Icons.calendar_today, 'Calendario'),
-                  _buildServiceButton(Icons.shopping_cart, 'Carrito'),
+                  _buildServiceButton(Icons.card_giftcard, 'Regalos'),                  
                   _buildServiceButton(Icons.fastfood, 'Comida'),
                 ],
               ),
